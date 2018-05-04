@@ -50,8 +50,6 @@ int corsairlink_hid_device_id(struct corsair_device_info *dev, struct libusb_dev
 
     memcpy(device_id, response+2, 1);
 
-    dump_packet(response,sizeof(response));
-
     return 0;
 }
 

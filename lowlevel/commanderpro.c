@@ -19,6 +19,7 @@
 #include <stdio.h>
 #include <libusb.h>
 #include "lowlevel/commanderpro.h"
+#include "print.h"
 
 #define HID_SET_REPORT 0x09 /*!< HID_SET_REPORT */
 #define HID_GET_REPORT 0x01 /*!< HID_GET_REPORT */
@@ -57,6 +58,8 @@ int corsairlink_commanderpro_write(struct libusb_device_handle *dev_handle,
 	int bytes_transferred;
 	int rr;
 	
+	dump_packet_write(data, length);
+
 	rr = libusb_bulk_transfer(dev_handle, endpoint, data, length, &bytes_transferred, TIMEOUT_DEFAULT);
 
 	return rr;
@@ -71,6 +74,8 @@ int corsairlink_commanderpro_read(struct libusb_device_handle *dev_handle,
 	int rr;
 	
 	rr = libusb_bulk_transfer(dev_handle, endpoint, data, length, &bytes_transferred, TIMEOUT_DEFAULT);
+
+	dump_packet_read(data, bytes_transferred);
 
 	return rr;
 }

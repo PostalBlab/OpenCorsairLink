@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <libusb.h>
 #include "lowlevel/hid.h"
+#include "print.h"
 
 #define HID_SET_REPORT 0x09
 #define HID_GET_REPORT 0x01
@@ -76,6 +77,8 @@ int corsairlink_hid_write(struct libusb_device_handle *dev_handle,
     int bytes_transferred;
     int rr;
 
+    dump_packet_write(data, length);
+
     rr = libusb_control_transfer(dev_handle,
                 CONTROL_REQUEST_TYPE_OUT,
                 HID_SET_REPORT, /** HID Set_Report */
@@ -106,6 +109,8 @@ int corsairlink_hid_read(struct libusb_device_handle *dev_handle,
                 endpoint,
                 data, length,
                 &bytes_transferred, TIMEOUT_DEFAULT);
+
+    dump_packet_read(data, bytes_transferred);
 
     return rr;
 }

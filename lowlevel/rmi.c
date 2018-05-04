@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <libusb.h>
 #include "lowlevel/rmi.h"
+#include "print.h"
 
 #define TIMEOUT_DEFAULT 5000
 #define INTERRUPT_IN_ENDPOINT 0x81
@@ -67,6 +68,8 @@ int corsairlink_rmi_write(struct libusb_device_handle *dev_handle,
     int bytes_transferred;
     int rr;
 
+    dump_packet_write(data, length);
+
     rr = libusb_interrupt_transfer(dev_handle,
                 endpoint,
                 data, length,
@@ -95,6 +98,8 @@ int corsairlink_rmi_read(struct libusb_device_handle *dev_handle,
                 endpoint,
                 data, length,
                 &bytes_transferred, TIMEOUT_DEFAULT);
+
+    dump_packet_read(data, bytes_transferred);
 
     return rr;
 }

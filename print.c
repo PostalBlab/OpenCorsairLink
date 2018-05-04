@@ -55,8 +55,22 @@ int print(enum msglevel level, const char *fmt, ...)
     return 0;
 }
 
-int dump_packet(uint8_t *packet, int size)
+int dump_packet_read(uint8_t *packet, int size)
 {
+    return dump_packet(packet, size, "Read from device");
+}
+
+int dump_packet_write(uint8_t *packet, int size)
+{
+    return dump_packet(packet, size, "Write to device");
+}
+
+int dump_packet(uint8_t *packet, int size, const char *direction)
+{
+    if(direction)
+    {
+        msg_debug2("\n%s", direction);
+    }
     msg_debug2("\n---- Packet dump: -----------------------------");
     for (int8_t j = 0; j < size; j++)
     {
